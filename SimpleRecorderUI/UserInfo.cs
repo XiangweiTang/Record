@@ -8,18 +8,18 @@ namespace SimpleRecorderUI
 {
     class UserInfo
     {
-        public Guid UserId { get; private set; } = new Guid();
-        public byte Age { get; private set; } = 0;
-        public bool Gender { get; private set; } = true;
-        public UserInfo(byte age, bool gender)
+        public Guid UserGuid { get; }
+        public string UserId { get; set; } = "";
+        public byte Age { get; set; } = 0;
+        public string Gender { get; set; } = "U";
+        public string Dialect { get; set; } = "U";
+        public UserInfo()
         {
-            UserId = Guid.NewGuid();
-            Age = age;
-            Gender = gender;
+            UserGuid = Guid.NewGuid();
         }
         public override string ToString()
         {
-            return $"{UserId.ToString()}\t{Age}\t{Gender}";
+            return $"{UserGuid.ToString()}\t{UserId}\t{Age}\t{Gender}\t{Dialect}";
         }
     }
 }

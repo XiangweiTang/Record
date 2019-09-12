@@ -9,8 +9,8 @@ namespace SimpleRecorderUI
 {
     static class MciCommands
     {
-        public static string Alias { get; set; } = "";
-        public static string filePath { get; set; } = "";
+        private static string Alias = "sound";
+        public static string FilePath { get; set; } = "";
         [DllImport("winmm.dll")]
         extern static void mciSendString(string cmdString, string returnString, int cchReturn, int callBack);
         public static void RunMci(string cmdString)
@@ -38,7 +38,7 @@ namespace SimpleRecorderUI
 
         public static void MciSave()
         {
-            string cmdString = $"save {Alias} {filePath}";
+            string cmdString = $"save {Alias} {FilePath}";
             RunMci(cmdString);
         }
 

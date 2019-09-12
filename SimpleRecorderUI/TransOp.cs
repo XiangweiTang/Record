@@ -9,11 +9,12 @@ namespace SimpleRecorderUI
 {
     class TransOp
     {
-        public readonly string[] TransArray = new string[0];
+        public readonly string[] TransArray = new string[1] { "" };
         public int CurrrentIndex { get; private set; } = 0;
         public TransOp(string transPath)
         {
-            TransArray = File.ReadAllLines(transPath);
+            if (File.Exists(transPath))
+                TransArray = File.ReadAllLines(transPath);
         }
 
         public string MoveNext()
