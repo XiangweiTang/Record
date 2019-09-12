@@ -52,6 +52,7 @@
             this.Btn_Record.TabIndex = 1;
             this.Btn_Record.Text = "开始录音";
             this.Btn_Record.UseVisualStyleBackColor = true;
+            this.Btn_Record.Click += new System.EventHandler(this.Btn_Record_Click);
             // 
             // Label_Info
             // 

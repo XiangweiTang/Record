@@ -23,6 +23,7 @@ namespace SimpleRecorderUI
         private void Init()
         {
             TrOp = new TransOp(TransPath);
+            ChangeId(0);
             InitTransList();
         }
 
@@ -34,17 +35,33 @@ namespace SimpleRecorderUI
 
         private void Combo_TransList_SelectedIndexChanged(object sender, EventArgs e)
         {
+            int index = Combo_TransList.SelectedIndex;
+            ChangeId(index);
+        }
+
+        private void ChangeId(int index)
+        {
+            TrOp.JumpToN(index);
+            Label_Info.Text = $"当前文本：{TrOp.CurrrentIndex + 1}/{TrOp.TransArray.Length}";
             string currentContext = Combo_TransList.Text;
             int spaceIndex = currentContext.IndexOf(' ');
             Label_Trans.Text = currentContext.Substring(spaceIndex + 1);
-            int index = int.Parse(currentContext.Substring(0, spaceIndex)) - 1;
-            TrOp.JumpToN(index);
-            ChangeId();
         }
 
-        private void ChangeId()
+        private bool RecordStarted = false;
+        private void Btn_Record_Click(object sender, EventArgs e)
         {
-            Label_Info.Text = $"当前文本：{TrOp.CurrrentIndex + 1}/{TrOp.TransArray.Length}";
+            RecordStarted = !RecordStarted;
+            if (RecordStarted)
+            {
+                Btn_Record.Text = "正在录音";
+                Btn_Record.ForeColor = Color.Green;
+            }
+            else
+            {
+                Btn_Record.Text = "开始录音";
+                Btn_Record.ForeColor = Color.Black;
+            }
         }
     }
 }
