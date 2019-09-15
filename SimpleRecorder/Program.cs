@@ -12,8 +12,6 @@ namespace SimpleRecorder
     {
         static void Main(string[] args)
         {
-            string transFilePath = @"C:\Users\v-xianta\Documents\tmp\Trans.txt";
-            string audioFolderPath = @"C:\Users\v-xianta\Documents\tmp\Audio";
         }
 
         static void AddNewUser(byte age, bool gender, string transFilePath, string audioRootFolderPath, string recordFilePath)
