@@ -31,6 +31,8 @@ namespace SimpleRecorderUI
             SetId(0);
             BE = new Backend();
             BE.TrOp = TrOp;
+            TextBox_WorkRootPath.Text = Cfg.WorkRootPath;
+            TextBox_TransPath.Text = Cfg.TransPath;
         }
         private void InitConfig()
         {
@@ -45,7 +47,7 @@ namespace SimpleRecorderUI
             Combo_TransList.Items.Clear();
             int showIndex = 1;
             foreach (string trans in TrOp.TransArray)
-                Combo_TransList.Items.Add($"{showIndex++} {trans}");
+                Combo_TransList.Items.Add($"{showIndex++} {trans}");            
         }
 
         private void InitGenderList()
@@ -130,6 +132,8 @@ namespace SimpleRecorderUI
                 LoadFromForm();
                 Cfg.SaveToFile();
                 TrOp = new TransOp(Cfg.TransPath);
+                InitTransList();
+                SetId(0);
             }
             else
             {

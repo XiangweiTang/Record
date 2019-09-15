@@ -69,6 +69,7 @@
             // 
             this.Label_Trans.BackColor = System.Drawing.SystemColors.Info;
             this.Label_Trans.Font = new System.Drawing.Font("Microsoft YaHei", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Label_Trans.ForeColor = System.Drawing.Color.MidnightBlue;
             this.Label_Trans.Location = new System.Drawing.Point(10, 50);
             this.Label_Trans.Name = "Label_Trans";
             this.Label_Trans.Size = new System.Drawing.Size(800, 180);
@@ -293,7 +294,6 @@
             this.TextBox_TransPath.Name = "TextBox_TransPath";
             this.TextBox_TransPath.Size = new System.Drawing.Size(500, 29);
             this.TextBox_TransPath.TabIndex = 16;
-            this.TextBox_TransPath.Text = "d:\\tmp\\work\\trans.txt";
             // 
             // Label_TransPath
             // 
@@ -320,7 +320,6 @@
             this.TextBox_WorkRootPath.Name = "TextBox_WorkRootPath";
             this.TextBox_WorkRootPath.Size = new System.Drawing.Size(500, 29);
             this.TextBox_WorkRootPath.TabIndex = 9;
-            this.TextBox_WorkRootPath.Text = "d:\\tmp\\work";
             // 
             // TextBox_BitsPerSample
             // 

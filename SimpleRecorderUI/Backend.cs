@@ -24,7 +24,7 @@ namespace SimpleRecorderUI
 
         public void EndRecord()
         {
-            string userFolder= Path.Combine(Cfg.AudioRootPath, UInfo.UserGuid.ToString());
+            string userFolder= Path.Combine(Cfg.AudioRootPath, UInfo.UserId.ToString());
             if (!Directory.Exists(userFolder))
                 Directory.CreateDirectory(userFolder);
             MciCommands.FilePath = Path.Combine(userFolder, $"{TrOp.CurrrentIndex.ToString("0000")}_{DateTime.Now.ToString("yyyyMMddhhmmss")}.wav");
