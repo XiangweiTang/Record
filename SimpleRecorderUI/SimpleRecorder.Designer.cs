@@ -33,8 +33,10 @@
             this.Combo_TransList = new System.Windows.Forms.ComboBox();
             this.TabPage_Main = new System.Windows.Forms.TabControl();
             this.TabPage_Record = new System.Windows.Forms.TabPage();
+            this.Label_Recording = new System.Windows.Forms.Label();
             this.Label_Info = new System.Windows.Forms.Label();
             this.TabPage_UserInfo = new System.Windows.Forms.TabPage();
+            this.Btn_ResetUI = new System.Windows.Forms.Button();
             this.TextBox_UserDialect = new System.Windows.Forms.TextBox();
             this.ComboBox_UserGender = new System.Windows.Forms.ComboBox();
             this.TextBox_UserAge = new System.Windows.Forms.TextBox();
@@ -44,6 +46,10 @@
             this.Label_UserAge = new System.Windows.Forms.Label();
             this.Label_UserId = new System.Windows.Forms.Label();
             this.TabPage_Setting = new System.Windows.Forms.TabPage();
+            this.Btn_SetWorkRootPath = new System.Windows.Forms.Button();
+            this.Btn_SetTransPath = new System.Windows.Forms.Button();
+            this.TextBox_TransPath = new System.Windows.Forms.TextBox();
+            this.Label_TransPath = new System.Windows.Forms.Label();
             this.Btn_ResetSetting = new System.Windows.Forms.Button();
             this.TextBox_WorkRootPath = new System.Windows.Forms.TextBox();
             this.TextBox_BitsPerSample = new System.Windows.Forms.TextBox();
@@ -53,7 +59,6 @@
             this.Label_BitsPerSample = new System.Windows.Forms.Label();
             this.Label_Channel = new System.Windows.Forms.Label();
             this.Label_SampleRate = new System.Windows.Forms.Label();
-            this.Btn_RestUI = new System.Windows.Forms.Button();
             this.TabPage_Main.SuspendLayout();
             this.TabPage_Record.SuspendLayout();
             this.TabPage_UserInfo.SuspendLayout();
@@ -82,8 +87,10 @@
             // 
             // Combo_TransList
             // 
+            this.Combo_TransList.DropDownHeight = 300;
             this.Combo_TransList.Font = new System.Drawing.Font("Microsoft YaHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Combo_TransList.FormattingEnabled = true;
+            this.Combo_TransList.IntegralHeight = false;
             this.Combo_TransList.Location = new System.Drawing.Point(10, 260);
             this.Combo_TransList.Name = "Combo_TransList";
             this.Combo_TransList.Size = new System.Drawing.Size(625, 27);
@@ -105,6 +112,7 @@
             // TabPage_Record
             // 
             this.TabPage_Record.BackColor = System.Drawing.SystemColors.Control;
+            this.TabPage_Record.Controls.Add(this.Label_Recording);
             this.TabPage_Record.Controls.Add(this.Btn_Record);
             this.TabPage_Record.Controls.Add(this.Combo_TransList);
             this.TabPage_Record.Controls.Add(this.Label_Info);
@@ -116,6 +124,17 @@
             this.TabPage_Record.Size = new System.Drawing.Size(832, 326);
             this.TabPage_Record.TabIndex = 0;
             this.TabPage_Record.Text = "录音";
+            // 
+            // Label_Recording
+            // 
+            this.Label_Recording.Font = new System.Drawing.Font("Microsoft YaHei", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Label_Recording.ForeColor = System.Drawing.Color.Green;
+            this.Label_Recording.Location = new System.Drawing.Point(690, 15);
+            this.Label_Recording.Name = "Label_Recording";
+            this.Label_Recording.Size = new System.Drawing.Size(120, 25);
+            this.Label_Recording.TabIndex = 8;
+            this.Label_Recording.Text = "未在录音";
+            this.Label_Recording.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // Label_Info
             // 
@@ -130,7 +149,7 @@
             // TabPage_UserInfo
             // 
             this.TabPage_UserInfo.BackColor = System.Drawing.SystemColors.Control;
-            this.TabPage_UserInfo.Controls.Add(this.Btn_RestUI);
+            this.TabPage_UserInfo.Controls.Add(this.Btn_ResetUI);
             this.TabPage_UserInfo.Controls.Add(this.TextBox_UserDialect);
             this.TabPage_UserInfo.Controls.Add(this.ComboBox_UserGender);
             this.TabPage_UserInfo.Controls.Add(this.TextBox_UserAge);
@@ -145,7 +164,16 @@
             this.TabPage_UserInfo.Size = new System.Drawing.Size(832, 326);
             this.TabPage_UserInfo.TabIndex = 1;
             this.TabPage_UserInfo.Text = "用户";
-            this.TabPage_UserInfo.Leave += new System.EventHandler(this.TabPage_UserInfo_Leave);
+            // 
+            // Btn_ResetUI
+            // 
+            this.Btn_ResetUI.Location = new System.Drawing.Point(20, 260);
+            this.Btn_ResetUI.Name = "Btn_ResetUI";
+            this.Btn_ResetUI.Size = new System.Drawing.Size(120, 40);
+            this.Btn_ResetUI.TabIndex = 12;
+            this.Btn_ResetUI.Text = "设置";
+            this.Btn_ResetUI.UseVisualStyleBackColor = true;
+            this.Btn_ResetUI.Click += new System.EventHandler(this.Btn_ResetUI_Click);
             // 
             // TextBox_UserDialect
             // 
@@ -219,6 +247,10 @@
             // TabPage_Setting
             // 
             this.TabPage_Setting.BackColor = System.Drawing.SystemColors.Control;
+            this.TabPage_Setting.Controls.Add(this.Btn_SetWorkRootPath);
+            this.TabPage_Setting.Controls.Add(this.Btn_SetTransPath);
+            this.TabPage_Setting.Controls.Add(this.TextBox_TransPath);
+            this.TabPage_Setting.Controls.Add(this.Label_TransPath);
             this.TabPage_Setting.Controls.Add(this.Btn_ResetSetting);
             this.TabPage_Setting.Controls.Add(this.TextBox_WorkRootPath);
             this.TabPage_Setting.Controls.Add(this.TextBox_BitsPerSample);
@@ -234,7 +266,43 @@
             this.TabPage_Setting.Size = new System.Drawing.Size(832, 326);
             this.TabPage_Setting.TabIndex = 2;
             this.TabPage_Setting.Text = "设置";
-            this.TabPage_Setting.Leave += new System.EventHandler(this.TabPage_Setting_Leave);
+            // 
+            // Btn_SetWorkRootPath
+            // 
+            this.Btn_SetWorkRootPath.Location = new System.Drawing.Point(700, 100);
+            this.Btn_SetWorkRootPath.Name = "Btn_SetWorkRootPath";
+            this.Btn_SetWorkRootPath.Size = new System.Drawing.Size(120, 29);
+            this.Btn_SetWorkRootPath.TabIndex = 18;
+            this.Btn_SetWorkRootPath.Text = "设置工作文件夹";
+            this.Btn_SetWorkRootPath.UseVisualStyleBackColor = true;
+            this.Btn_SetWorkRootPath.Click += new System.EventHandler(this.Btn_SetWorkRootPath_Click);
+            // 
+            // Btn_SetTransPath
+            // 
+            this.Btn_SetTransPath.Location = new System.Drawing.Point(700, 60);
+            this.Btn_SetTransPath.Name = "Btn_SetTransPath";
+            this.Btn_SetTransPath.Size = new System.Drawing.Size(120, 29);
+            this.Btn_SetTransPath.TabIndex = 17;
+            this.Btn_SetTransPath.Text = "设置文本路径";
+            this.Btn_SetTransPath.UseVisualStyleBackColor = true;
+            this.Btn_SetTransPath.Click += new System.EventHandler(this.Btn_SetTransPath_Click);
+            // 
+            // TextBox_TransPath
+            // 
+            this.TextBox_TransPath.Location = new System.Drawing.Point(160, 60);
+            this.TextBox_TransPath.Name = "TextBox_TransPath";
+            this.TextBox_TransPath.Size = new System.Drawing.Size(500, 29);
+            this.TextBox_TransPath.TabIndex = 16;
+            this.TextBox_TransPath.Text = "d:\\tmp\\work\\trans.txt";
+            // 
+            // Label_TransPath
+            // 
+            this.Label_TransPath.Location = new System.Drawing.Point(20, 60);
+            this.Label_TransPath.Name = "Label_TransPath";
+            this.Label_TransPath.Size = new System.Drawing.Size(120, 30);
+            this.Label_TransPath.TabIndex = 15;
+            this.Label_TransPath.Text = "文本路径";
+            this.Label_TransPath.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // Btn_ResetSetting
             // 
@@ -242,13 +310,13 @@
             this.Btn_ResetSetting.Name = "Btn_ResetSetting";
             this.Btn_ResetSetting.Size = new System.Drawing.Size(120, 40);
             this.Btn_ResetSetting.TabIndex = 11;
-            this.Btn_ResetSetting.Text = "重置";
+            this.Btn_ResetSetting.Text = "设置";
             this.Btn_ResetSetting.UseVisualStyleBackColor = true;
             this.Btn_ResetSetting.Click += new System.EventHandler(this.Btn_ResetSetting_Click);
             // 
             // TextBox_WorkRootPath
             // 
-            this.TextBox_WorkRootPath.Location = new System.Drawing.Point(180, 140);
+            this.TextBox_WorkRootPath.Location = new System.Drawing.Point(160, 100);
             this.TextBox_WorkRootPath.Name = "TextBox_WorkRootPath";
             this.TextBox_WorkRootPath.Size = new System.Drawing.Size(500, 29);
             this.TextBox_WorkRootPath.TabIndex = 9;
@@ -256,40 +324,40 @@
             // 
             // TextBox_BitsPerSample
             // 
-            this.TextBox_BitsPerSample.Location = new System.Drawing.Point(180, 100);
+            this.TextBox_BitsPerSample.Location = new System.Drawing.Point(600, 20);
             this.TextBox_BitsPerSample.Name = "TextBox_BitsPerSample";
-            this.TextBox_BitsPerSample.Size = new System.Drawing.Size(100, 29);
+            this.TextBox_BitsPerSample.Size = new System.Drawing.Size(60, 29);
             this.TextBox_BitsPerSample.TabIndex = 8;
             this.TextBox_BitsPerSample.Text = "16";
             // 
             // TextBox_Channel
             // 
-            this.TextBox_Channel.Location = new System.Drawing.Point(180, 60);
+            this.TextBox_Channel.Location = new System.Drawing.Point(380, 20);
             this.TextBox_Channel.Name = "TextBox_Channel";
-            this.TextBox_Channel.Size = new System.Drawing.Size(100, 29);
+            this.TextBox_Channel.Size = new System.Drawing.Size(60, 29);
             this.TextBox_Channel.TabIndex = 7;
             this.TextBox_Channel.Text = "1";
             // 
             // TextBox_SampleRate
             // 
-            this.TextBox_SampleRate.Location = new System.Drawing.Point(180, 20);
+            this.TextBox_SampleRate.Location = new System.Drawing.Point(160, 20);
             this.TextBox_SampleRate.Name = "TextBox_SampleRate";
-            this.TextBox_SampleRate.Size = new System.Drawing.Size(100, 29);
+            this.TextBox_SampleRate.Size = new System.Drawing.Size(60, 29);
             this.TextBox_SampleRate.TabIndex = 6;
             this.TextBox_SampleRate.Text = "16000";
             // 
             // Label_WorkRootFolder
             // 
-            this.Label_WorkRootFolder.Location = new System.Drawing.Point(20, 140);
+            this.Label_WorkRootFolder.Location = new System.Drawing.Point(20, 100);
             this.Label_WorkRootFolder.Name = "Label_WorkRootFolder";
             this.Label_WorkRootFolder.Size = new System.Drawing.Size(120, 30);
             this.Label_WorkRootFolder.TabIndex = 4;
-            this.Label_WorkRootFolder.Text = "工作路径";
+            this.Label_WorkRootFolder.Text = "工作文件夹";
             this.Label_WorkRootFolder.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // Label_BitsPerSample
             // 
-            this.Label_BitsPerSample.Location = new System.Drawing.Point(20, 100);
+            this.Label_BitsPerSample.Location = new System.Drawing.Point(460, 20);
             this.Label_BitsPerSample.Name = "Label_BitsPerSample";
             this.Label_BitsPerSample.Size = new System.Drawing.Size(120, 30);
             this.Label_BitsPerSample.TabIndex = 3;
@@ -298,7 +366,7 @@
             // 
             // Label_Channel
             // 
-            this.Label_Channel.Location = new System.Drawing.Point(20, 60);
+            this.Label_Channel.Location = new System.Drawing.Point(240, 20);
             this.Label_Channel.Name = "Label_Channel";
             this.Label_Channel.Size = new System.Drawing.Size(120, 30);
             this.Label_Channel.TabIndex = 2;
@@ -313,16 +381,6 @@
             this.Label_SampleRate.TabIndex = 1;
             this.Label_SampleRate.Text = "采样率";
             this.Label_SampleRate.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // Btn_RestUI
-            // 
-            this.Btn_RestUI.Location = new System.Drawing.Point(20, 260);
-            this.Btn_RestUI.Name = "Btn_RestUI";
-            this.Btn_RestUI.Size = new System.Drawing.Size(120, 40);
-            this.Btn_RestUI.TabIndex = 12;
-            this.Btn_RestUI.Text = "重置";
-            this.Btn_RestUI.UseVisualStyleBackColor = true;
-            this.Btn_RestUI.Click += new System.EventHandler(this.Btn_RestUI_Click);
             // 
             // SimpleRecorder
             // 
@@ -370,7 +428,12 @@
         private System.Windows.Forms.TextBox TextBox_Channel;
         private System.Windows.Forms.TextBox TextBox_SampleRate;
         private System.Windows.Forms.Label Label_WorkRootFolder;
-        private System.Windows.Forms.Button Btn_RestUI;
+        private System.Windows.Forms.Button Btn_ResetUI;
+        private System.Windows.Forms.TextBox TextBox_TransPath;
+        private System.Windows.Forms.Label Label_TransPath;
+        private System.Windows.Forms.Label Label_Recording;
+        private System.Windows.Forms.Button Btn_SetWorkRootPath;
+        private System.Windows.Forms.Button Btn_SetTransPath;
     }
 }
 

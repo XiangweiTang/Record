@@ -9,16 +9,12 @@ namespace SimpleRecorderUI
 {
     class Backend
     {
-        Config Cfg = null;
-        public UserInfo UI { get; set; } = null;
+        public Config Cfg { get; set; } = null;
+        public UserInfo UInfo { get; set; } = null;
         public TransOp TrOp { get; set; } = null;
-        public Backend(Config cfg, UserInfo ui, TransOp trOp)
+        public Backend()
         {
-            Cfg = cfg;
-            UI = ui;
-            TrOp = trOp;
         }
-
         public void StartRecord()
         {
             MciCommands.MciOpen();
@@ -28,13 +24,13 @@ namespace SimpleRecorderUI
 
         public void EndRecord()
         {
-            string userFolder= Path.Combine(Cfg.AudioRootPath, UI.UserGuid.ToString());
+            string userFolder= Path.Combine(Cfg.AudioRootPath, UInfo.UserGuid.ToString());
             if (!Directory.Exists(userFolder))
                 Directory.CreateDirectory(userFolder);
             MciCommands.FilePath = Path.Combine(userFolder, $"{TrOp.CurrrentIndex.ToString("0000")}_{DateTime.Now.ToString("yyyyMMddhhmmss")}.wav");
             MciCommands.MciSave();
             MciCommands.MciClose();
-            string info = $"{ UI.ToString()}\t{TrOp.CurrrentIndex}\t{TrOp.TransArray[TrOp.CurrrentIndex]}\t{MciCommands.FilePath}";
+            string info = $"{ UInfo.ToString()}\t{TrOp.CurrrentIndex}\t{TrOp.CurrentTrans}\t{MciCommands.FilePath}";
             File.AppendAllLines(Cfg.RecordPath, new string[] { info });
         }        
     }

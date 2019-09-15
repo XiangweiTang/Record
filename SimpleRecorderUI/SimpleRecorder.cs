@@ -12,10 +12,9 @@ namespace SimpleRecorderUI
 {
     public partial class SimpleRecorder : Form
     {
-        private string TransPath = @"D:\tmp\trans.txt";
         TransOp TrOp = null;
         Config Cfg = null;
-        UserInfo UI = null;
+        UserInfo UInfo = null;
         Backend BE = null;
         public SimpleRecorder()
         {
@@ -27,59 +26,26 @@ namespace SimpleRecorderUI
         {
             InitConfig();
             TrOp = new TransOp(Cfg.TransPath);
-            InitUI();
             InitTransList();
             InitGenderList();
             SetId(0);
-            BE = new Backend(Cfg, UI, TrOp);
+            BE = new Backend();
+            BE.TrOp = TrOp;
         }
         private void InitConfig()
         {
-            string workRootPath = TextBox_WorkRootPath.Text;
-            if (string.IsNullOrWhiteSpace(workRootPath))
-                workRootPath = ".\\";
-
-            string sampleRateStr = TextBox_SampleRate.Text;
-            int sampleRate;
-            if (!int.TryParse(sampleRateStr, out sampleRate))
-                sampleRate = 16000;
-
-            string channelStr = TextBox_Channel.Text;
-            int channel;
-            if (!int.TryParse(channelStr, out channel))
-                channel = 1;
-
-            string bitsPerSampleStr = TextBox_BitsPerSample.Text;
-            int bitsPerSample;
-            if (!int.TryParse(bitsPerSampleStr, out bitsPerSample))
-                bitsPerSample = 2;
-
             Cfg = new Config();
-            Cfg.Load(workRootPath, sampleRate.ToString(), channel.ToString(), bitsPerSample.ToString());
-        }
-
-        private void InitUI()
-        {
-            UI = new UserInfo();
-            UI.UserId = TextBox_UserId.Text;
-
-            byte age;
-            if (!byte.TryParse(TextBox_UserAge.Text, out age))
-                age = 20;
-            UI.Age = age;
-
-            if (ComboBox_UserGender.Text == "男")
-                UI.Gender = "M";
+            if (Cfg.SettingExists)
+                Cfg.LoadFromFile();
             else
-                UI.Gender = "F";
-
-            UI.Dialect = TextBox_UserDialect.Text;
+                LoadFromForm();
         }
         private void InitTransList()
         {
             Combo_TransList.Items.Clear();
-            for (int i = 1; i <= TrOp.TransArray.Length; i++)
-                Combo_TransList.Items.Add($"{i} {TrOp.TransArray[i - 1]}");
+            int showIndex = 1;
+            foreach (string trans in TrOp.TransArray)
+                Combo_TransList.Items.Add($"{showIndex++} {trans}");
         }
 
         private void InitGenderList()
@@ -87,6 +53,7 @@ namespace SimpleRecorderUI
             ComboBox_UserGender.Items.Clear();
             ComboBox_UserGender.Items.Add("男");
             ComboBox_UserGender.Items.Add("女");
+            ComboBox_UserGender.Items.Add("不设置");
         }
 
         private void Combo_TransList_SelectedIndexChanged(object sender, EventArgs e)
@@ -97,13 +64,13 @@ namespace SimpleRecorderUI
 
         private void ChangeId(int n)
         {
-            TrOp.MoveNNext(n);
+            TrOp.ChangeIndex(n);
             ShowWithId();
         }
 
         private void SetId(int n)
         {
-            TrOp.JumpToN(n);
+            TrOp.SetIndex(n);
             ShowWithId();
         }
         
@@ -111,62 +78,140 @@ namespace SimpleRecorderUI
         {
             Combo_TransList.SelectedItem = Combo_TransList.Items[TrOp.CurrrentIndex];
             Label_Info.Text = $"当前进度：{TrOp.CurrrentIndex + 1}/{TrOp.TransArray.Length}";
-            Label_Trans.Text = TrOp.TransArray[TrOp.CurrrentIndex];
+            Label_Trans.Text = TrOp.CurrentTrans;
         }
 
         private bool RecordStarted = false;
         private void Btn_Record_Click(object sender, EventArgs e)
         {
             RecordStarted = !RecordStarted;
+            if (BE.TrOp == null)
+            {
+                MessageBox.Show("请设定文本文件路径。");
+                return;
+            }
+            if (BE.UInfo == null)
+            {
+                MessageBox.Show("请设定用户信息。");
+                return;
+            }
+            if (BE.Cfg == null)
+            {
+                MessageBox.Show("请设定设置。");
+                return;
+            }
             if (RecordStarted)
             {
-                Btn_Record.Text = "正在录音";
-                Btn_Record.ForeColor = Color.Green;
+                Label_Recording.Text = "录音进行中";
+                Label_Recording.ForeColor = Color.Red;
+                Btn_Record.Text = "停止录音";
                 Combo_TransList.Enabled = false;
                 BE.StartRecord();
             }
             else
             {
                 BE.EndRecord();
+                Label_Recording.Text = "未在录音";
+                Label_Recording.ForeColor = Color.Green;
                 Btn_Record.Text = "开始录音";
-                Btn_Record.ForeColor = Color.Black;
                 Combo_TransList.Enabled = true;
                 ChangeId(1);
             }
         }
 
-        private void TabPage_Setting_Leave(object sender, EventArgs e)
-        {
-            TextBox_SampleRate.Enabled = false;
-            TextBox_Channel.Enabled = false;
-            TextBox_BitsPerSample.Enabled = false;
-            TextBox_WorkRootPath.Enabled = false;
-            Init();            
-        }
-
-        private void TabPage_UserInfo_Leave(object sender, EventArgs e)
-        {
-            TextBox_UserId.Enabled = false;
-            TextBox_UserAge.Enabled = false;
-            ComboBox_UserGender.Enabled = false;
-            TextBox_UserDialect.Enabled = false;
-            Init();
-        }
-
-        private void Btn_RestUI_Click(object sender, EventArgs e)
-        {
-            TextBox_UserId.Enabled = true;
-            TextBox_UserAge.Enabled = true;
-            ComboBox_UserGender.Enabled = true;
-            TextBox_UserDialect.Enabled = true;
-        }
-
+        private bool ResetSettingDone = false;
         private void Btn_ResetSetting_Click(object sender, EventArgs e)
         {
-            TextBox_SampleRate.Enabled = true;
-            TextBox_Channel.Enabled = true;
-            TextBox_BitsPerSample.Enabled = true;
-            TextBox_WorkRootPath.Enabled = true;
+            ActivateSettings(ResetSettingDone);
+            ResetSettingDone = !ResetSettingDone;
+            if (ResetSettingDone)
+            {
+                Cfg = new Config();
+                LoadFromForm();
+                Cfg.SaveToFile();
+                TrOp = new TransOp(Cfg.TransPath);
+            }
+            else
+            {
+                TrOp = null;          
+            }
+            BE.Cfg = Cfg;
+            BE.TrOp = TrOp;
+            Btn_ResetSetting.Text = ResetSettingDone ? "重置" : "设置";
+        }
+
+        private void LoadFromForm()
+        {
+            Cfg.LoadWithInput(
+                TextBox_WorkRootPath.Text,
+                TextBox_TransPath.Text,
+                TextBox_SampleRate.Text,
+                TextBox_Channel.Text,
+                TextBox_BitsPerSample.Text
+                );
+        }
+        private void ActivateSettings(bool b)
+        {
+            TextBox_SampleRate.Enabled = b;
+            TextBox_Channel.Enabled = b;
+            TextBox_BitsPerSample.Enabled = b;
+            TextBox_TransPath.Enabled = b;
+            TextBox_WorkRootPath.Enabled = b;
+            Btn_SetTransPath.Enabled = b;
+            Btn_SetWorkRootPath.Enabled = b;
+        }
+
+        private bool ResetUIDone = false;
+        private void Btn_ResetUI_Click(object sender, EventArgs e)
+        {
+            ActivateUserInfo(ResetUIDone);
+            ResetUIDone = !ResetUIDone;
+            if (ResetUIDone)
+            {
+                UInfo = new UserInfo();
+                UInfo.Load(
+                    TextBox_UserId.Text,
+                    TextBox_UserAge.Text,
+                    ComboBox_UserGender.Text,
+                    TextBox_UserDialect.Text
+                    );
+            }
+            else
+            {
+                UInfo = null;                
+            }
+            BE.UInfo = UInfo;
+            Btn_ResetUI.Text = ResetUIDone ? "重置" : "设置";
+        }
+
+        private void ActivateUserInfo(bool b)
+        {
+            TextBox_UserId.Enabled = b;
+            TextBox_UserAge.Enabled = b;
+            ComboBox_UserGender.Enabled = b;
+            TextBox_UserDialect.Enabled = b;
+        }
+
+        private void Btn_SetWorkRootPath_Click(object sender, EventArgs e)
+        {
+            FolderBrowserDialog openFolder = new FolderBrowserDialog();
+            openFolder.Description = "请设置工作路径";
+            if (openFolder.ShowDialog() == DialogResult.OK)
+            {
+                Cfg.WorkRootPath = openFolder.SelectedPath;
+                TextBox_WorkRootPath.Text = openFolder.SelectedPath;
+            }
+        }
+
+        private void Btn_SetTransPath_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog openDialog = new OpenFileDialog();
+            openDialog.Title = "请选择文本文件";
+            if (openDialog.ShowDialog() == DialogResult.OK)
+            {
+                Cfg.TransPath = openDialog.FileName;
+                TextBox_TransPath.Text = openDialog.FileName;
+            }
         }
     }
 }

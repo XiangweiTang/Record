@@ -17,6 +17,29 @@ namespace SimpleRecorderUI
         {
             UserGuid = Guid.NewGuid();
         }
+        public void Load(params string[] args)
+        {
+            UserId = args[0];
+
+            try { Age = byte.Parse(args[1]); }
+            catch { Age = 20; }
+
+            switch (args[2])
+            {
+                case "男":
+                    Gender = "M";
+                    break;
+                case "女":
+                    Gender = "F";
+                    break;
+                default:
+                    Gender = "U";
+                    break;
+            }
+
+            if (!string.IsNullOrWhiteSpace(args[3]))
+                Dialect = args[3];
+        }
         public override string ToString()
         {
             return $"{UserGuid.ToString()}\t{UserId}\t{Age}\t{Gender}\t{Dialect}";

@@ -9,51 +9,24 @@ namespace SimpleRecorderUI
 {
     class TransOp
     {
+        public string CurrentTrans => TransArray[CurrrentIndex];
         public readonly string[] TransArray = new string[1] { "" };
         public int CurrrentIndex { get; private set; } = 0;
         public TransOp(string transPath)
         {
             if (File.Exists(transPath))
                 TransArray = File.ReadAllLines(transPath);
+            if (TransArray.Length == 0)
+                TransArray = new string[1] { "" };
         }
 
-        public string MoveNext()
-        {
-            ChangeIndex(1);
-            return TransArray[CurrrentIndex];
-        }
-
-        public string MovePrevious()
-        {
-            ChangeIndex(-1);
-            return TransArray[CurrrentIndex];
-        }
-
-        public string MoveNNext(int n)
-        {
-            ChangeIndex(n);
-            return TransArray[CurrrentIndex];
-        }
-
-        public string MoveNPrevious(int n)
-        {
-            ChangeIndex(-n);
-            return TransArray[CurrrentIndex];
-        }
-
-        public string JumpToN(int n)
-        {
-            SetIndex(n);
-            return TransArray[CurrrentIndex];
-        }
-
-        private void ChangeIndex(int i)
+        public void ChangeIndex(int i)
         {
             CurrrentIndex += i;
             ValidateIndex();
         }
 
-        private void SetIndex(int i)
+        public void SetIndex(int i)
         {
             CurrrentIndex = i;
             ValidateIndex();
