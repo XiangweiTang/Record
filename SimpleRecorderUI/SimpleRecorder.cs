@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -102,6 +103,10 @@ namespace SimpleRecorderUI
                 MessageBox.Show("请设定设置。");
                 return;
             }
+            if (!File.Exists(Cfg.TransPath))
+            {
+                MessageBox.Show($"文本路径不存在：\r\n{Cfg.TransPath}");
+            }
             if (RecordStarted)
             {
                 Label_Recording.Text = "录音进行中";
@@ -142,6 +147,7 @@ namespace SimpleRecorderUI
             BE.Cfg = Cfg;
             BE.TrOp = TrOp;
             Btn_ResetSetting.Text = ResetSettingDone ? "重置" : "设置";
+            Label_SettingSetting.Text = ResetSettingDone ? "当前已设置，点击左侧重置" : "当前未设置，点击左侧设置";
         }
 
         private void LoadFromForm()
@@ -186,6 +192,7 @@ namespace SimpleRecorderUI
             }
             BE.UInfo = UInfo;
             Btn_ResetUI.Text = ResetUIDone ? "重置" : "设置";
+            Label_UserInfoSetting.Text= ResetUIDone ? "当前已设置，点击左侧重置" : "当前未设置，点击左侧设置";
         }
 
         private void ActivateUserInfo(bool b)
