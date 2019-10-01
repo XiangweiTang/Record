@@ -9,6 +9,11 @@ namespace SimpleRecorderUI
 {
     static partial class Common
     {
+        public static byte[] ReadBytes(string filePath, int n)
+        {
+
+            return ReadBytes(filePath, 0, n);
+        }
         public static byte[] ReadBytes(string filePath, int offset, int length)
         {
             using(FileStream fs=new FileStream(filePath, FileMode.Open, FileAccess.Read))

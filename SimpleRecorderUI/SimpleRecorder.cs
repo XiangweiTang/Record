@@ -87,7 +87,6 @@ namespace SimpleRecorderUI
         private bool RecordStarted = false;
         private void Btn_Record_Click(object sender, EventArgs e)
         {
-            RecordStarted = !RecordStarted;
             if (BE.TrOp == null)
             {
                 MessageBox.Show("请设定文本文件路径。");
@@ -107,6 +106,7 @@ namespace SimpleRecorderUI
             {
                 MessageBox.Show($"文本路径不存在：\r\n{Cfg.TransPath}");
             }
+            RecordStarted = !RecordStarted;
             if (RecordStarted)
             {
                 Label_Recording.Text = "录音进行中";
@@ -116,7 +116,7 @@ namespace SimpleRecorderUI
                 BE.StartRecord();
             }
             else
-            {
+            {                
                 BE.EndRecord();
                 Label_Recording.Text = "未在录音";
                 Label_Recording.ForeColor = Color.Green;
