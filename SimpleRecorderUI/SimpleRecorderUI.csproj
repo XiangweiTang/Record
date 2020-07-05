@@ -49,6 +49,8 @@
     <Compile Include="Backend.cs" />
     <Compile Include="Common.cs" />
     <Compile Include="Config.cs" />
+    <Compile Include="Constants.cs" />
+    <Compile Include="Int24.cs" />
     <Compile Include="MciCommands.cs" />
     <Compile Include="Sanity.cs" />
     <Compile Include="SimpleRecorder.cs">
@@ -63,6 +65,7 @@
     <Compile Include="TextGrid.cs" />
     <Compile Include="TransOp.cs" />
     <Compile Include="UserInfo.cs" />
+    <Compile Include="Wave.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

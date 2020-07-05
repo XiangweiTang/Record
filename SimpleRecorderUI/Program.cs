@@ -23,6 +23,7 @@ namespace SimpleRecorderUI
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new SimpleRecorder());
+            //Test t = new Test();
         }
     }
 }
