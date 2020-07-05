@@ -12,7 +12,8 @@ namespace SimpleRecorderUI
         public Config Cfg { get; set; } = null;
         public UserInfo UInfo { get; set; } = null;
         public TransOp TrOp { get; set; } = null;
-        private string NameCore = "";
+        private string AudioNameCore = "";
+        private string LogName = "";
         public Backend()
         {
         }
@@ -25,10 +26,16 @@ namespace SimpleRecorderUI
 
         public void EndRecord()
         {
-            string userFolder= Path.Combine(Cfg.AudioRootPath, UInfo.UserId.ToString());
-            if (!Directory.Exists(userFolder))
-                Directory.CreateDirectory(userFolder);
-            NameCore= Path.Combine(userFolder, $"{TrOp.CurrrentIndex.ToString("0000")}_{DateTime.Now.ToString("yyyyMMddhhmmss")}");
+            string userAudioFolder= Path.Combine(Cfg.AudioRootPath, UInfo.UserId.ToString());
+            if (!Directory.Exists(userAudioFolder))
+                Directory.CreateDirectory(userAudioFolder);
+            string userLogFolder = Path.Combine(Cfg.RecordRootPath, UInfo.UserId.ToString());
+            if (!Directory.Exists(userLogFolder))
+                Directory.CreateDirectory(userLogFolder);
+            LogName = Path.Combine(userLogFolder, TrOp.CurrrentIndex + ".txt");
+            // HACK: now we only use single file mode.
+            //NameCore= Path.Combine(userFolder, $"{TrOp.CurrrentIndex.ToString("0000")}_{DateTime.Now.ToString("yyyyMMddhhmmss")}");
+            AudioNameCore = Path.Combine(userAudioFolder, $"{TrOp.CurrrentIndex.ToString("0000")}");
             SaveToWav();
             SaveToLog();
             SaveToTextGrid();
@@ -36,22 +43,24 @@ namespace SimpleRecorderUI
 
         private void SaveToWav()
         {
-            MciCommands.FilePath = NameCore + ".wav";
+            MciCommands.FilePath = AudioNameCore + ".wav";
+            if (File.Exists(MciCommands.FilePath))
+                File.Delete(MciCommands.FilePath);
             MciCommands.MciSave();
             MciCommands.MciClose();
         }
 
         private void SaveToLog()
         {
-            string info = $"{ UInfo.ToString()}\t{TrOp.CurrrentIndex}\t{TrOp.CurrentTrans}\t{MciCommands.FilePath}";
-            File.AppendAllLines(Cfg.RecordPath, new string[] { info });
+            string info = $"{ UInfo}\t{TrOp.CurrrentIndex}\t{TrOp.CurrentTrans}\t{MciCommands.FilePath}";
+            File.WriteAllText(LogName, info);
         }
         private void SaveToTextGrid()
         {
             long audioFileLength = new FileInfo(MciCommands.FilePath).Length;
             double audioLength = 1.0 * audioFileLength / Cfg.BytesPerSecond;
             TextGrid tg = new TextGrid(TrOp.CurrentTrans, audioLength);
-            tg.Save(NameCore + ".TextGrid");
+            tg.Save(AudioNameCore + ".TextGrid");
         }
     }
 }

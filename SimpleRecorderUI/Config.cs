@@ -18,9 +18,10 @@ namespace SimpleRecorderUI
         // WorkPath(Unicode)    528 512  1040
         const int BYTE_LENGTH = 4 + 2 + 2 + 4 + 512 + 4 + 512;
         public bool SettingExists => File.Exists(SettingPath);
-        private string SettingPath = @"setting.bin";
+        private string SettingPath => Path.Combine(WorkRootPath, "Settings.bin");
         public string WorkRootPath { get; set; } = "";
         public string AudioRootPath => Path.Combine(WorkRootPath, "Audios");
+        public string RecordRootPath => Path.Combine(WorkRootPath, "Log");
         public string TransPath { get; set; } = "";
         public string RecordPath => Path.Combine(WorkRootPath, "Record.txt");        
         public int SampleRate { get; set; } = 24000;
@@ -34,10 +35,10 @@ namespace SimpleRecorderUI
         {
             WorkRootPath = args[0];
             if (string.IsNullOrWhiteSpace(WorkRootPath))
-                WorkRootPath = @".\";
+                WorkRootPath = @".\Work";
             TransPath = args[1].Trim('"');
             if (string.IsNullOrWhiteSpace(TransPath))
-                TransPath = "";
+                TransPath = "Transcript.txt";
 
             try { SampleRate = int.Parse(args[2]); }
             catch { SampleRate = 16000; }
