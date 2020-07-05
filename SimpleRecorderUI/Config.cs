@@ -22,12 +22,13 @@ namespace SimpleRecorderUI
         public string WorkRootPath { get; set; } = "";
         public string AudioRootPath => Path.Combine(WorkRootPath, "Audios");
         public string TransPath { get; set; } = "";
-        public string RecordPath => Path.Combine(WorkRootPath, "Record.txt");
+        public string RecordPath => Path.Combine(WorkRootPath, "Record.txt");        
         public int SampleRate { get; set; } = 24000;
         public short Channel { get; set; } = 1;
         public short BitsPerSample { get; set; } = 16;
         public int ByteRate => SampleRate * BlockAlign;
         public int BlockAlign => Channel * BitsPerSample / 8;
+        public int BytesPerSecond = 1;
         public Config() { }
         public void LoadWithInput(params string[] args)
         {
@@ -45,7 +46,8 @@ namespace SimpleRecorderUI
             catch { Channel = 1; }
 
             try { BitsPerSample = short.Parse(args[4]); }
-            catch { BitsPerSample = 16; }            
+            catch { BitsPerSample = 16; }
+            BytesPerSecond = SampleRate * Channel * BitsPerSample / 8;
         }        
 
         public void LoadFromFile()

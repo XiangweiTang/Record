@@ -12,6 +12,7 @@ namespace SimpleRecorderUI
         public Config Cfg { get; set; } = null;
         public UserInfo UInfo { get; set; } = null;
         public TransOp TrOp { get; set; } = null;
+        private string NameCore = "";
         public Backend()
         {
         }
@@ -27,11 +28,30 @@ namespace SimpleRecorderUI
             string userFolder= Path.Combine(Cfg.AudioRootPath, UInfo.UserId.ToString());
             if (!Directory.Exists(userFolder))
                 Directory.CreateDirectory(userFolder);
-            MciCommands.FilePath = Path.Combine(userFolder, $"{TrOp.CurrrentIndex.ToString("0000")}_{DateTime.Now.ToString("yyyyMMddhhmmss")}.wav");
+            NameCore= Path.Combine(userFolder, $"{TrOp.CurrrentIndex.ToString("0000")}_{DateTime.Now.ToString("yyyyMMddhhmmss")}");
+            SaveToWav();
+            SaveToLog();
+            SaveToTextGrid();
+        }        
+
+        private void SaveToWav()
+        {
+            MciCommands.FilePath = NameCore + ".wav";
             MciCommands.MciSave();
             MciCommands.MciClose();
+        }
+
+        private void SaveToLog()
+        {
             string info = $"{ UInfo.ToString()}\t{TrOp.CurrrentIndex}\t{TrOp.CurrentTrans}\t{MciCommands.FilePath}";
             File.AppendAllLines(Cfg.RecordPath, new string[] { info });
-        }        
+        }
+        private void SaveToTextGrid()
+        {
+            long audioFileLength = new FileInfo(MciCommands.FilePath).Length;
+            double audioLength = 1.0 * audioFileLength / Cfg.BytesPerSecond;
+            TextGrid tg = new TextGrid(TrOp.CurrentTrans, audioLength);
+            tg.Save(NameCore + ".TextGrid");
+        }
     }
 }

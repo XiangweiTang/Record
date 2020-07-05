@@ -14,6 +14,12 @@ namespace SimpleRecorderUI
         [STAThread]
         static void Main()
         {
+            UI();
+            //Test t = new Test();
+        }
+
+        static void UI()
+        {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new SimpleRecorder());
