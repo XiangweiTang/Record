@@ -17,6 +17,17 @@ namespace SimpleRecorderUI
             string path = "SimpleRecorderUI.Internal.TextGridTemplate.txt";
             TextGridTemplate = ReadEmbedAll(path);
         }
+        public static byte[] ReadBytes(string filePath, int length)
+        {
+            using(FileStream fs=new FileStream(filePath, FileMode.Open, FileAccess.Read))
+            {
+                int intLength = fs.Length > int.MaxValue ? length : Math.Min(length, (int)fs.Length);
+                using(BinaryReader br=new BinaryReader(fs))
+                {
+                    return br.ReadBytes(intLength);
+                }
+            }
+        }
         public static byte[] ReadBytes(string filePath, int offset, int length)
         {
             using (FileStream fs = new FileStream(filePath, FileMode.Open, FileAccess.Read))
