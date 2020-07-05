@@ -35,7 +35,7 @@ namespace SimpleRecorderUI
         {
             WorkRootPath = args[0];
             if (string.IsNullOrWhiteSpace(WorkRootPath))
-                WorkRootPath = @".\Work";
+                WorkRootPath = @"Work";
             TransPath = args[1].Trim('"');
             if (string.IsNullOrWhiteSpace(TransPath))
                 TransPath = "Transcript.txt";
