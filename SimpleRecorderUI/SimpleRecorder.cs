@@ -43,9 +43,10 @@ namespace SimpleRecorderUI
         private void InitConfig()
         {
             Cfg = new Config();
-            if (Cfg.SettingExists)
-                Cfg.LoadFromFile();
-            else
+            // HACK: diable setting related.
+            //if (Cfg.SettingExists)
+            //    Cfg.LoadFromFile();
+            //else
                 LoadFromForm();
         }
         private void InitTransList()
@@ -142,7 +143,8 @@ namespace SimpleRecorderUI
             {
                 Cfg = new Config();
                 LoadFromForm();
-                Cfg.SaveToFile();
+                // HACK: disable the setting save.
+                //Cfg.SaveToFile();
                 TrOp = new TransOp(Cfg.TransPath);
                 InitTransList();
                 SetId(0);

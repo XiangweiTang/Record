@@ -210,7 +210,6 @@
             this.TextBox_UserAge.Name = "TextBox_UserAge";
             this.TextBox_UserAge.Size = new System.Drawing.Size(100, 29);
             this.TextBox_UserAge.TabIndex = 5;
-            this.TextBox_UserAge.Text = "20";
             // 
             // TextBox_UserId
             // 
@@ -218,7 +217,6 @@
             this.TextBox_UserId.Name = "TextBox_UserId";
             this.TextBox_UserId.Size = new System.Drawing.Size(100, 29);
             this.TextBox_UserId.TabIndex = 4;
-            this.TextBox_UserId.Text = "1";
             // 
             // Label_UserDialect
             // 
